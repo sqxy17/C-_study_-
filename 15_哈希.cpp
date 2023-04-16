@@ -5,6 +5,8 @@
 
 
 //哈希(也叫做散列)------哈希表有的地方也叫做散列表
+// 
+
 
 
 
@@ -43,46 +45,46 @@
 
 
 //ps2:二次探测
-#include"15_哈希表的实现_闭散列.h"
-
-
-
-void TestHashTable()
-{
-    HashTable<int, int>ht;
-    int arr[] = { 2,12,22,32,42,52,62,72,72 };
-    for (auto e : arr)
-    {
-        ht.insert(make_pair(e, e));
-    }
-
-    cout << ht.find(12) << endl;
-    ht.erase(12);
-    cout << ht.find(12) << endl;
-}
-
-
-
-void TestHashTable1()
-{
-    HashTable<string, string,Hash>ht;
-    ht.insert(make_pair("sort", "排序"));//也就是说如果插入的是字符串会怎么办    ----会报错,会在取模的地方崩溃,字符串是没有办法取模的
-    ht.insert(make_pair("apple", "苹果"));
-
-    //HashStr str1;
-    //HashStr str2;
-
-    //cout << str1("apple") << endl;
-    //cout << str2("orange") << endl;
-    //cout << str2("elppa") << endl;//虽然顺序不同,但是输出的数字是一样的,但是用了BKDR算法之后,就不会冲突了                  //----------此外还有字符串哈希算法
-}
-
-int main(void)
-{
-    cout << "hehe" << endl;
-    TestHashTable();
-    TestHashTable1();
-}
+//#include"15_哈希表的实现_闭散列.h"
+//
+//
+//
+//void TestHashTable()
+//{
+//    HashTable<int, int>ht;
+//    int arr[] = { 2,12,22,32,42,52,62,72,72 };
+//    for (auto e : arr)
+//    {
+//        ht.insert(make_pair(e, e));
+//    }
+//
+//    cout << ht.find(12) << endl;
+//    ht.erase(12);
+//    cout << ht.find(12) << endl;
+//}
+//
+//
+//
+//void TestHashTable1()
+//{
+//    HashTable<string, string,Hash>ht;
+//    ht.insert(make_pair("sort", "排序"));//也就是说如果插入的是字符串会怎么办    ----会报错,会在取模的地方崩溃,字符串是没有办法取模的
+//    ht.insert(make_pair("apple", "苹果"));
+//
+//    //HashStr str1;
+//    //HashStr str2;
+//
+//    //cout << str1("apple") << endl;
+//    //cout << str2("orange") << endl;
+//    //cout << str2("elppa") << endl;//虽然顺序不同,但是输出的数字是一样的,但是用了BKDR算法之后,就不会冲突了                  //----------此外还有字符串哈希算法
+//}
+//
+//int main(void)
+//{
+//    cout << "hehe" << endl;
+//    TestHashTable();
+//    TestHashTable1();
+//}
 
 
 
@@ -91,5 +93,76 @@ int main(void)
 //这种方法又叫做链地址法(拉链法/哈希桶),首先对关键码集合用散列函数计算散列地址,具有相同地址的关键码归于同一子集合,每一个子集合称为一个桶,各个桶中的元素通过一个单链表链接起来,各俩链表的头结点存储在哈希表中
 
 //相邻位置冲突,不会再争抢位置,不会互相影响
-// 
+
+
+//#include"15_哈希表的实现_开散列.h"
 //
+//void testhashtable()
+//{
+//	HashTable<int, int>ht;
+//	int arr[] = { 4,24,14,7,37,27,57,67,34,14,54,73 };
+//	for (auto e : arr)
+//	{
+//		ht.insert(make_pair(e, e));
+//	}
+//}
+//
+//int main(void)
+//{
+//	testhashtable();
+//}
+
+
+
+
+
+
+
+//----------------------------------------------------ps:unordered_xxx并没有封装实现,后面二刷再去实现---,第一遍只是简单观看
+//一个类型去做map和set的key有什么要求?
+//ps1:支持比较大小就可以
+
+
+//一个类型去做unordered_map和unordered_set的key又有什么要求?
+//ps1:支持取模或者能支持转换成取模的整型
+//ps2:还要支持key比较是否相等的仿函数
+
+
+
+
+
+
+
+
+
+//三丶常见的哈希函数
+//1.常见的哈希函数
+//ps1:直接定址法
+//ps2:除留余数法
+//ps3:平方取中法   ---适合不知道关键字的分布,而位数也不是很大的情况
+//ps4:折叠法    ---适合事先不知道关键字的分布,适合关键字位数较多的情况
+//ps5:随机数法   ---适合关键字长度不相等的时候
+//ps6:数学分析法   ---数学分析法通常适用关键字位数较大的情况,如果事先知道关键字的分布且关键字的若干位分布较均匀的情况
+
+//总结:哈希函数设置的越精巧,冲突越小
+
+
+
+
+
+//2.补充一种方法:基数树         ----这种方法的思路就是基数树    这种也叫多阶哈希
+//ps1:这个方法将一个整型(比如int类型的,32个比特位,4个字节,一个字节8位),拆分成4组比特位,每组比特位刚好就是8位(当然还能分成更多的组),如果要是就分成一个组那就是直接定址法
+// //---假设从高位到低位分成abcd4组,每组8个比特位,比特位中保存的是二进制的数字
+
+//ps2:每一组分别映射出一个数字(0-255)    ---两个整数进行插入用,首先看他们的a组映射出的数字是否冲突,如果不冲突就能插入,如果冲突就再映射b组的数字是否冲突.....全部都一样就是两个数字相同,后者就不进行插入
+//ps3:分的组数越多,每层开辟的空间越小,4组每层就要分配0-255这些格子(每个格子能存放一个相应的8比特位转化的数字)
+//ps4:分组也可以不均等分,第一组6位,第二组10位
+
+
+
+
+
+//3.什么是页号
+//ps1:针对动态开辟的内存,4k是一页,
+
+
